@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - "9080:8080"
+    networks:
+      - isolated
+    environment:
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_URL=jdbc:mysql://mysql-db-prod:3306/${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+    depends_on:
+      - mysql-db-prod
+  mysql-db-prod:
+    image: "mysql:8.0"
+    restart: always
+    ports:
+      - "3309:3306"
+    networks:
+        - isolated
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+networks:
+  isolated:
+    driver: bridge
