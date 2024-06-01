@@ -4,6 +4,12 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  packages: write
+  deployments: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -16,7 +22,7 @@ jobs:
         with:
           project_id: '${{ secrets.GCP_PROJECT_ID }}'
           workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.GCP_IDENTITY_POOL }}/providers/${{ secrets.GCP_IDENTITY_PROVIDERS }}'
-          service_account: 'github-actions@jenkins-411518.iam.gserviceaccount.com'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
