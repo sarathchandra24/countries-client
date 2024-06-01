@@ -20,9 +20,11 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
+          token_format: access_token
           project_id: '${{ secrets.GCP_PROJECT_ID }}'
           workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.GCP_IDENTITY_POOL }}/providers/${{ secrets.GCP_IDENTITY_PROVIDERS }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          access_token_lifetime: 300s
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
