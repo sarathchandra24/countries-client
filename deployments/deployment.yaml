@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: countries-client
+  labels:
+    app: countries-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: countries-client
+  template:
+    metadata:
+      name: countries-client
+      labels:
+        app: countries-client
+    spec:
+      containers:
+        - name: countries-client
+          image: ${REGISTRY_LOCATION}-docker.pkg.dev/${ARTIFACTORY_REPO}/${IMAGE_NAME}:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      
