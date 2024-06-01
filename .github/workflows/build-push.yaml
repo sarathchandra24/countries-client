@@ -11,12 +11,12 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Google Cloud authentication
-        id: 'auth'
-        uses: google-github-actions/setup-gcloud@v2
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          project_id: "${{ secrets.GCP_PROJECT_ID }}"
-          workload_identity_provider: "projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.GCP_IDENTITY_POOL }}/providers/${{ secrets.GCP_IDENTITY_PROVIDERS }}"
-          service_account: "github-actions@jenkins-411518.iam.gserviceaccount.com"
+          project_id: '${{ secrets.GCP_PROJECT_ID }}'
+          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.GCP_IDENTITY_POOL }}/providers/${{ secrets.GCP_IDENTITY_PROVIDERS }}'
+          service_account: 'github-actions@jenkins-411518.iam.gserviceaccount.com'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -28,14 +28,14 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ vars.REGISTRY_LOCATION }}-docker.pkg.dev
-          username: "oauth2accesstoken"
+          username: 'oauth2accesstoken'
           password: ${{ steps.auth.outputs.access_token }}
 
       - name: docker metadata
         id: image-metadata
         uses: docker/metadata-action@v5
         with:
-          images: "${{ vars.REGISTRY_LOCATION }}-docker.pkg.dev/${{ vars.ARTIFACTORY_REPO }}/${{ vars.IMAGE_NAME }}"
+          images: '${{ vars.REGISTRY_LOCATION }}-docker.pkg.dev/${{ vars.ARTIFACTORY_REPO }}/${{ vars.IMAGE_NAME }}'
           tags: |
             raw,latest
             type=ref,event=branch
